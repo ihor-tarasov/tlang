@@ -14,7 +14,7 @@ fn operator() -> impl Fn(Input) -> Res<Operator> {
     })
 }
 
-pub fn binary() -> impl Fn(Input) -> Res<Expr> {
+fn binary() -> impl Fn(Input) -> Res<Expr> {
     let other = and(operator(), expr_digit());
     let others = fold(
         other,
@@ -34,4 +34,8 @@ pub fn binary() -> impl Fn(Input) -> Res<Expr> {
             }
         }
     })
+}
+
+pub fn expr() -> impl Fn(Input) -> Res<Expr> {
+    map(binary(), |expr| Expr::End(Box::new(expr)))
 }

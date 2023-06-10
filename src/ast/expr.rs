@@ -7,28 +7,26 @@ pub enum Expr {
         first: Box<Expr>,
         others: Vec<(Operator, Expr)>,
     },
-}
-
-impl Expr {
-    fn compile_inner<E, C: Compiler<E>>(&self, compiler: &mut C) -> Result<(), E> {
-        match self {
-            Expr::Integer(v) => compiler.integer(*v),
-            Expr::Binary { first, others } => {
-                first.compile_inner(compiler)?;
-                for (operator, expr) in others {
-                    compiler.binary()?;
-                    expr.compile_inner(compiler)?;
-                    compiler.operator(*operator)?;
-                }
-                Ok(())
-            }
-        }
-    }
+    End(Box<Expr>),
 }
 
 impl Compile for Expr {
     fn compile<E, C: Compiler<E>>(&self, compiler: &mut C) -> Result<(), E> {
-        self.compile_inner(compiler)?;
-        compiler.end()
+        match self {
+            Expr::Integer(v) => compiler.integer(*v),
+            Expr::Binary { first, others } => {
+                first.compile(compiler)?;
+                for (operator, expr) in others {
+                    compiler.binary()?;
+                    expr.compile(compiler)?;
+                    compiler.operator(*operator)?;
+                }
+                Ok(())
+            }
+            Expr::End(expr) => {
+                expr.compile(compiler)?;
+                compiler.end()
+            },
+        }
     }
 }

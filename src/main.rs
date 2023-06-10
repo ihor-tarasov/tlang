@@ -1,6 +1,6 @@
 use std::io::Read;
 
-use tlang::{ast::{binary, Compile}, lexer::Input, vm::{Compiler, State, Stack, Fixed}};
+use tlang::{ast::{expr, Compile}, lexer::Input, vm::{Compiler, State, Stack, Fixed}};
 
 struct ReadSlice<'a>(&'a [u8]);
 
@@ -18,7 +18,7 @@ impl<'a> Read for ReadSlice<'a> {
 fn main() {
     let code = "2+2-1+8-9+1".chars();
 
-    let parser = binary();
+    let parser = expr();
 
     let expr = parser(Input::new(code)).lexem().unwrap().unwrap().t;
 
