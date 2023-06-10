@@ -20,7 +20,7 @@ fn main() {
 
     let parser = binary();
 
-    let expr = parser(Input::new(code)).lexem().unwrap().unwrap().data();
+    let expr = parser(Input::new(code)).lexem().unwrap().unwrap().t;
 
     let mut program = Vec::new();
     let mut compiler = Compiler::new(&mut program);
