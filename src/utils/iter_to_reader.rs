@@ -1,5 +1,6 @@
 use crate::lexer::Reader;
 
+#[derive(Clone)]
 pub struct IterToReader<I: Iterator<Item = u8>> {
     iter: I,
     c: Option<u8>,
@@ -16,7 +17,7 @@ impl<I: Iterator<Item = u8>> IterToReader<I> {
     }
 }
 
-impl<I: Iterator<Item = u8>> Reader for IterToReader<I> {
+impl<I: Iterator<Item = u8> + Clone> Reader for IterToReader<I> {
     fn current(&mut self) -> Option<u8> {
         self.c.clone()
     }

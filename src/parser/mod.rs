@@ -8,8 +8,8 @@ pub use stream::*;
 
 use crate::{ast::Expr, token::TokenKind};
 
-pub fn parse<S: TokenStream>(stream: &mut S) -> Result<Expr, Error> {
-    let expr = binary::parse(stream)?;
+pub fn parse<S: TokenStream>(mut stream: S) -> Result<Expr, Error> {
+    let expr = binary::parse(&mut stream)?;
 
     let token = stream.next();
     match token.kind {
