@@ -1,6 +1,9 @@
-use crate::{ast::{Expr, Operator}, token::TokenKind};
+use crate::{
+    ast::{Binary, Expr, Operator},
+    token::TokenKind,
+};
 
-use super::{TokenStream, Error, primary};
+use super::{primary, Error, TokenStream};
 
 fn term<S: TokenStream>(stream: &mut S) -> Result<Expr, Error> {
     let first = primary::parse(stream)?;
@@ -24,10 +27,7 @@ fn term<S: TokenStream>(stream: &mut S) -> Result<Expr, Error> {
     if others.is_empty() {
         Ok(first)
     } else {
-        Ok(Expr::Binary {
-            first: Box::new(first),
-            others,
-        })
+        Ok(Binary::new(first, others))
     }
 }
 
