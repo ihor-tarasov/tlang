@@ -56,7 +56,8 @@ pub fn run_str_unwrap(code: &'static str) -> Option<Value> {
             RunError::VmError(e) => println!("Runtime Error: {e:?}"),
             RunError::ParserError(e) => {
                 let info = LineInfo::from_str(code, e.pos);
-                println!("{info}")
+                println!("{info}");
+                println!("Parse error: {}", e.msg);
             }
         },
     }

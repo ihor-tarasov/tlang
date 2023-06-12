@@ -5,6 +5,8 @@ mod reader;
 pub use reader::*;
 
 pub fn lex<R: Reader>(reader: &mut R) -> Token {
+
+
     let start = reader.pos();
 
     let c = match reader.next() {
